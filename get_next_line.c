@@ -25,25 +25,40 @@
 int		get_next_line(const int openfd, char **line)
 {
 	char	buff[BUFF_SIZE + 1];
-	int		i;
-	char 	*strjoin;
-	strjoin = "Z";
+	int		readRetInt;
+	char 	*str;
+	str = "";
+	int		j;
 
 	if (!(line))
 		return (-1);
-	i = read(openfd, buff, BUFF_SIZE);
+	readRetInt = read(openfd, buff, BUFF_SIZE);
+	// j = readRetInt;
 	buff[BUFF_SIZE] = 0;
-	while (i > 0)
+	if (readRetInt == 0)
 	{
-		if (ft_strchr(buff, '\n') != NULL)
-		{
-			strjoin = ft_strjoin(strjoin, buff);
-		}
-		i = read(openfd, buff, BUFF_SIZE);
+		str = ft_strjoin(str, buff);
+		*line = str;
+		return (readRetInt);
 	}
-	line = &strjoin;
+	if (readRetInt == -1)
+		return (readRetInt);
+	while (readRetInt > 0)// && !(ft_strchr(buff, '\0')))
+	{
+		buff[BUFF_SIZE] = 0;
+		if (readRetInt < BUFF_SIZE)//(ft_strchr(buff, '\0'))
+			buff[readRetInt] = 0;
+		str = ft_strjoin(str, buff);
+		readRetInt = read(openfd, buff, BUFF_SIZE);
+	}
+	*line = str;
 	return (1);
 }
+
+
+//strjoin will copy all elements of string array up until null char, and will add null to the end of the copied string
+//strchr will return a pointer to the part of a string where a char was found. 
+
 
 // char *ptr = "Pointer string";	ptr is the address of the string currently pointing to the first char
 //									*ptr is the char the pointer points to, in this case 'P'
@@ -51,11 +66,11 @@ int		get_next_line(const int openfd, char **line)
 
 int		main(int argc, char *argv[])
 {
-	int			i;
+	// char		*i;
 	int			openfd;
 	char		a;
 	char		buff[BUFF_SIZE + 1];
-	char		**line;
+	char		*line;
 
 	openfd = open(argv[1], O_RDONLY);
 
@@ -65,16 +80,9 @@ int		main(int argc, char *argv[])
 	}
 
 	if (openfd != -1){
-		i = get_next_line(openfd, line);
-		// while ((i = get_next_line(openfd, line)))
-		// {
-
-		// }
+		get_next_line(openfd, &line);
 	}
-
-
-
-	printf("This is the first string: %s", *line);
+	printf("This is the first string: \n%s", line);// line[0]);
 	return (0);
 }
 
