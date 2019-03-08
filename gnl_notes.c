@@ -233,60 +233,60 @@ int		get_next_line(const int openfd, char **line)
 }
 
 
-// int		get_next_line(const int openfd, char **line)
-// {
-// 	int				bytsRead;
-// 	char			buff[BUFF_SIZE + 1];
-// 	char 			*str;
-// 	char 			*temp;
-// 	static char 	*statstr;										//bytsRead, buff, str, temp, statstr, openfd, line
+int		get_next_line(const int openfd, char **line)
+{
+	int				bytsRead;
+	char			buff[BUFF_SIZE + 1];
+	char 			*str;
+	char 			*temp;
+	static char 	*statstr;										//bytsRead, buff, str, temp, statstr, openfd, line
 
-// 	str = ft_strnew(0);
-// 	temp = ft_strnew(0);
-// 	bytsRead = 0;
-// 	buff[BUFF_SIZE] = 0;
-// 	if (statstr == 0)
-// 		bytsRead = read(openfd, buff, BUFF_SIZE);
-// 	if (!(line) || (bytsRead < 0))
-// 		return (-1);
-// 	if (statstr != NULL)
-// 	{
-// 		ft_strncpy(buff, statstr, BUFF_SIZE);
-// 		bytsRead = -2; 
-// 		temp = ft_strchr(statstr, '\n');
-// 		if (temp)
-// 			statstr = ft_memmove(statstr, temp, ft_strlen(temp));
-// 		else
-// 			ft_bzero(statstr, ft_strlen(statstr));
-// 	}
-// 	while (bytsRead > 0 || bytsRead == -2)
-// 	{
-// 		if (bytsRead == -1)
-// 		{
-// 			*line = NULL;
-// 			return (-1);
-// 		}
-// 		temp = ft_strchr(buff, '\n');
-// 		if (temp)
-// 		{
-// 			statstr = ft_strdup(temp + 1);
-// 			*temp = '\0';
-// 			*line = ft_strjoin(str, buff);
-// 			return (1);
-// 		}		
-// 		if (bytsRead < BUFF_SIZE && bytsRead > 0)
-// 		{
-// 			buff[bytsRead] = 0;
-// 			*line = ft_strjoin(str, buff);
-// 			return (0);
-// 		}
-// 		str = ft_strjoin(str, buff);
-// 		bytsRead = read(openfd, buff, BUFF_SIZE);
-// 		buff[BUFF_SIZE] = 0;
-// 	}
-// 	*line = NULL;
-// 	return (0);
-// }
+	str = ft_strnew(0);
+	temp = ft_strnew(0);
+	bytsRead = 0;
+	buff[BUFF_SIZE] = 0;
+	if (statstr == 0)
+		bytsRead = read(openfd, buff, BUFF_SIZE);
+	if (!(line) || (bytsRead < 0))
+		return (-1);
+	if (statstr != NULL)
+	{
+		ft_strncpy(buff, statstr, BUFF_SIZE);
+		bytsRead = -2; 
+		temp = ft_strchr(statstr, '\n');
+		if (temp)
+			statstr = ft_memmove(statstr, temp, ft_strlen(temp));
+		else
+			ft_bzero(statstr, ft_strlen(statstr));
+	}
+	while (bytsRead > 0 || bytsRead == -2)
+	{
+		if (bytsRead == -1)
+		{
+			*line = NULL;
+			return (-1);
+		}
+		temp = ft_strchr(buff, '\n');
+		if (temp)
+		{
+			statstr = ft_strdup(temp + 1);
+			*temp = '\0';
+			*line = ft_strjoin(str, buff);
+			return (1);
+		}		
+		if (bytsRead < BUFF_SIZE && bytsRead > 0)
+		{
+			buff[bytsRead] = 0;
+			*line = ft_strjoin(str, buff);
+			return (0);
+		}
+		str = ft_strjoin(str, buff);
+		bytsRead = read(openfd, buff, BUFF_SIZE);
+		buff[BUFF_SIZE] = 0;
+	}
+	*line = NULL;
+	return (0);
+}
 
 
 
